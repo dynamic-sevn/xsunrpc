@@ -1,0 +1,4 @@
+rootProject.name = 'xsunrpc'
+include 'xsunrpc-registry'
+include 'xsunrpc-registry-zookeeper'
+
