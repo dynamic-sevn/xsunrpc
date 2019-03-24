@@ -5,6 +5,6 @@ package com.xsun.rpc.registry;
  *
  * @author sunhaoran <nuaa_sunhr@yeah.net>
  */
-public interface ServiceReigistry {
+public interface ServiceRegistry {
     void registry(String serviceName, String serviceAddress) ;
 }

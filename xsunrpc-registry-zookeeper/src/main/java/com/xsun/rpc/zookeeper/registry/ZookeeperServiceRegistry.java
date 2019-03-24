@@ -1,6 +1,6 @@
 package com.xsun.rpc.zookeeper.registry;
 
-import com.xsun.rpc.registry.ServiceReigistry;
+import com.xsun.rpc.registry.ServiceRegistry;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sunhaoran <nuaa_sunhr@yeah.net>
  */
-public class ZookeeperServiceRegistry implements ServiceReigistry {
+public class ZookeeperServiceRegistry implements ServiceRegistry {
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperServiceRegistry.class) ;
 
     private final ZkClient zkClient ;
