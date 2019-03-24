@@ -6,4 +6,9 @@ package com.xsun.rpc.zookeeper.registry;
  * @author sunhaoran <nuaa_sunhr@yeah.net>
  */
 public class Constant {
+    public static final String ZK_REGISTRY_PATH = "registry" ;
+
+    public static final int ZK_SESSION_TIMEOUT = 60000 ;
+
+    public static final int ZK_CONNECT_TIMEOUT = 10000 ;
 }

@@ -22,5 +22,18 @@ public class ZookeeperServiceRegistry implements ServiceReigistry {
     @Override
     public void registry(String serviceName, String serviceAddress) {
 
+        String registryPath = Constant.ZK_REGISTRY_PATH ;
+
+        if(!zkClient.exists(registryPath)){
+            zkClient.createPersistent(registryPath);
+        }
+
+        String servicePath = registryPath + "/" +serviceName ;
+        if(!zkClient.exists(servicePath)){
+            zkClient.createPersistent(servicePath);
+        }
+
+        String addressPath = servicePath + "/address-" ;
+        zkClient.createEphemeralSequential(addressPath, serviceAddress) ;
     }
 }
