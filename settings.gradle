@@ -2,4 +2,5 @@ rootProject.name = 'xsunrpc'
 include 'xsunrpc-registry'
 include 'xsunrpc-registry-zookeeper'
 include 'xsunrpc-server'
+include 'xsunrpc-common'
 
