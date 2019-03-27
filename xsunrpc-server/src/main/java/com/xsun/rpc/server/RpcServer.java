@@ -6,9 +6,7 @@ import com.xsun.common.codec.RpcDecoder;
 import com.xsun.common.codec.RpcEncoder;
 import com.xsun.rpc.registry.ServiceRegistry;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -59,21 +57,39 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup() ;
-        EventLoopGroup workerGroup = new NioEventLoopGroup() ;
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline channelPipeline = ch.pipeline();
+                            channelPipeline.addLast(new RpcDecoder(RpcRequest.class))
+                                    .addLast(new RpcEncoder(RpcResponse.class))
+                                    .addLast(new RpcServerHandler(nameServiceMap));
+                        }
+                    });
+            bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
+            bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
 
-        ServerBootstrap bootstrap = new ServerBootstrap() ;
-        bootstrap.group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
-                .childHandler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline channelPipeline = ch.pipeline() ;
-                        channelPipeline.addLast(new RpcDecoder(RpcRequest.class))
-                                .addLast(new RpcEncoder(RpcResponse.class))
-                                .addLast(new RpcServerHandler(nameServiceMap)) ;
-                    }
-                }) ;
+            String[] addressArray = serviceAddress.split(":");
+            String ip = addressArray[0];
+            int port = Integer.parseInt(addressArray[1]);
 
+            ChannelFuture future = bootstrap.bind(ip, port).sync();
+            if (serviceRegistry != null) {
+                for (String interfaceName : nameServiceMap.keySet()) {
+                    serviceRegistry.registry(interfaceName, serviceAddress);
+                }
+            }
+
+            future.channel().closeFuture().sync();
+        }finally {
+            workerGroup.shutdownGracefully() ;
+            bossGroup.shutdownGracefully() ;
+        }
     }
 }
