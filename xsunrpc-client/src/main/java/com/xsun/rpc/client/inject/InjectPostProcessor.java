@@ -1,11 +1,15 @@
 package com.xsun.rpc.client.inject;
 
 import com.xsun.rpc.client.annotation.Reference;
+import com.xsun.rpc.client.common.SpringContextHolder;
 import com.xsun.rpc.client.proxy.XsunRpcProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import javax.annotation.Resource;
+import javax.swing.*;
 import java.lang.reflect.Field;
 
 /**
@@ -17,6 +21,8 @@ import java.lang.reflect.Field;
  */
 public class InjectPostProcessor implements BeanPostProcessor {
 
+    private static final Logger LOG = LoggerFactory.getLogger(InjectPostProcessor.class) ;
+
     @Resource
     private XsunRpcProxy xsunRpcProxy ;
 
@@ -26,9 +32,19 @@ public class InjectPostProcessor implements BeanPostProcessor {
         for(Field field : fields){
             // 若是reference注解的字段则将rpc代理类注给他
             if(field.getAnnotation(Reference.class) != null){
-                // TODO spring 容器里有就不用初始化了，否则初始化
-                field.set(bean, xsunRpcProxy.create(field.getDeclaringClass()));
+                try {
+                    // TODO spring 容器里有就不用初始化了，否则初始化
+                    if (SpringContextHolder.getBean(field.getDeclaringClass()) != null) {
+                        field.set(bean, SpringContextHolder.getBean(field.getDeclaringClass()));
+                    } else {
+                        field.set(bean, xsunRpcProxy.create(field.getDeclaringClass()));
+                    }
+                }catch (Exception e){
+                    LOG.error("Initialize bean error. beanClass = " + field.getDeclaringClass(), e);
+                }
             }
         }
+
+        return bean ;
     }
 }
