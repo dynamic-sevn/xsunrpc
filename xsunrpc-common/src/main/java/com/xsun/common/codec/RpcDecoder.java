@@ -1,7 +1,5 @@
 package com.xsun.common.codec;
 
-import com.xsun.common.bean.RpcRequest;
-import com.xsun.common.bean.RpcResponse;
 import com.xsun.common.util.SerializationUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
