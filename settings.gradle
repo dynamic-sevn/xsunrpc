@@ -4,4 +4,6 @@ include 'xsunrpc-registry-zookeeper'
 include 'xsunrpc-server'
 include 'xsunrpc-common'
 include 'xsunrpc-client'
+include 'xsunrpc-demo-api'
+include 'xsunrpc-demo-server'
 
