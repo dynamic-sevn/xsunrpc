@@ -16,7 +16,7 @@ public class ZookeeperServiceRegistry implements ServiceRegistry {
     private final ZkClient zkClient ;
 
     public ZookeeperServiceRegistry(String clientAddress){
-        this.zkClient = new ZkClient(clientAddress) ;
+        zkClient = new ZkClient(clientAddress) ;
     }
 
     @Override

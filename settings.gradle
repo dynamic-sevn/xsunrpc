@@ -6,4 +6,5 @@ include 'xsunrpc-common'
 include 'xsunrpc-client'
 include 'xsunrpc-demo-api'
 include 'xsunrpc-demo-server'
+include 'xsunrpc-demo-client'
 

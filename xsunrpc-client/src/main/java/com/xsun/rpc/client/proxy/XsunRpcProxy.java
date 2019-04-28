@@ -17,7 +17,6 @@ import java.util.UUID;
  *
  * @author sunhaoran <nuaa_sunhr@yeah.net>
  */
-@Component
 public class XsunRpcProxy {
     private String serviceAddress ;
     private ServiceDiscovery serviceDiscovery ;

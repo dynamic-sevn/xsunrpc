@@ -1,0 +1,5 @@
+dependencies {
+    compile project(path:':xsunrpc-client')
+    compile project(path: ':xsunrpc-demo-server')
+    compile project(path: ':xsunrpc-registry-zookeeper')
+}

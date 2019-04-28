@@ -9,7 +9,7 @@ import com.xsun.rpc.server.XsunRpc;
  * @author sunhaoran <nuaa_sunhr@yeah.net>
  */
 @XsunRpc(HelloWorldService.class)
-public class HelloWorldImpl implements HelloWorldService {
+public class HelloWorldServiceImpl implements HelloWorldService {
     @Override
     public String hello(String name) {
         return name + "hello world !";
