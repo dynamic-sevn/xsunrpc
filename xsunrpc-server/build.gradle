@@ -1,4 +1,4 @@
 dependencies {
-    compile project(path:':xsunrpc-registry')
-    compile project(path:':xsunrpc-common')
+    compile project(":xsunrpc-registry")
+    compile project(":xsunrpc-common")
 }

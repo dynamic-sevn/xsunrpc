@@ -8,10 +8,11 @@ subprojects{
     sourceCompatibility = 1.8
 
     ext{
-        springVersion = '5.1.5.RELEASE'
+        springVersion = "5.1.5.RELEASE"
     }
 
     repositories {
+        mavenLocal()
         maven{url = 'http://maven.aliyun.com/nexus/content/groups/public/'}
     }
 
@@ -22,13 +23,20 @@ subprojects{
         compile 'com.101tec:zkclient:0.11'
         compile 'org.apache.commons:commons-lang3:3.8.1'
         compile 'org.apache.commons:commons-collections4:4.3'
-        compile 'org.springframework:spring-context:5.1.5.RELEASE'
+        compile "org.springframework:spring-context:$springVersion"
+        testCompile "org.springframework:spring-test:$springVersion"
         compile 'io.netty:netty-all:4.1.34.Final'
         compile 'org.projectlombok:lombok:1.18.6'
         compile 'org.objenesis:objenesis:3.0.1'
-        compile 'com.dyuproject.protostuff:protostuff-core:1.1.3'
-        compile 'com.dyuproject.protostuff:protostuff-runtime:1.1.3'
+        compile 'com.dyuproject.protostuff:protostuff-core:1.0.8'
+        compile 'com.dyuproject.protostuff:protostuff-runtime:1.0.8'
+        annotationProcessor 'org.projectlombok:lombok:1.18.6'
 
+    }
+
+    //指定编译的编码
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
     }
 }
 
