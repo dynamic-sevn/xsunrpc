@@ -7,10 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.swing.*;
 import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 扫描注解，给引用字段初始化实例
@@ -23,8 +27,17 @@ public class InjectPostProcessor implements BeanPostProcessor {
 
     private static final Logger LOG = LoggerFactory.getLogger(InjectPostProcessor.class) ;
 
-    @Resource
+    /**
+     * 保存代理 rpc 对象
+     */
+    private Map<Class<?>, Object> rpcObjectMap ;
+
     private XsunRpcProxy xsunRpcProxy ;
+
+    public InjectPostProcessor(XsunRpcProxy xsunRpcProxy){
+        this.xsunRpcProxy = xsunRpcProxy ;
+        rpcObjectMap = new ConcurrentHashMap<>() ;
+    }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -34,13 +47,16 @@ public class InjectPostProcessor implements BeanPostProcessor {
             if(field.getAnnotation(Reference.class) != null){
                 try {
                     // TODO spring 容器里有就不用初始化了，否则初始化
-                    if (SpringContextHolder.getBean(field.getDeclaringClass()) != null) {
-                        field.set(bean, SpringContextHolder.getBean(field.getDeclaringClass()));
+                    field.setAccessible(true);
+                    if (rpcObjectMap.get(field.getType()) != null) {
+                        field.set(bean, rpcObjectMap.get(field.getType()));
                     } else {
-                        field.set(bean, xsunRpcProxy.create(field.getDeclaringClass()));
+                        field.set(bean, xsunRpcProxy.create(field.getType()));
+                        rpcObjectMap.put(field.getType(), bean) ;
                     }
                 }catch (Exception e){
-                    LOG.error("Initialize bean error. beanClass = " + field.getDeclaringClass(), e);
+                    LOG.error("Initialize bean error. beanClass = " + field.getType(), e);
+                    e.printStackTrace();
                 }
             }
         }

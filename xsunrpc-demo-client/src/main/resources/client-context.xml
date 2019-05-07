@@ -18,4 +18,8 @@
         <constructor-arg ref="serviceDiscovery"/>
     </bean>
 
+    <bean id="injectProcessor" class="com.xsun.rpc.client.inject.InjectPostProcessor">
+        <constructor-arg ref="xsunRpcProxy" />
+    </bean>
+
 </beans>
