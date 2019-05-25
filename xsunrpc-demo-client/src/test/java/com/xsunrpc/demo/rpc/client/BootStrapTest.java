@@ -17,6 +17,6 @@ public class BootStrapTest extends AbstractTest {
 
     @Test
     public void helloTest(){
-        bootstrapBean.hello("yejiawen") ;
+        System.out.println(bootstrapBean.hello("yejiawen "));
     }
 }

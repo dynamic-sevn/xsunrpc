@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <RollingFile name="appAppender" fileName="/data/applogs/xsunrpc-demo-server/root.log" filePattern="/data/applogs/owl-catreport/root-%d{yyyy-MM-dd}.log">>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+        </RollingFile>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="[xsunrpc-demo-server]%d %-5p [%c] %m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+
+        <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="appAppender" />
+        </Root>
+    </Loggers>
+</Configuration>

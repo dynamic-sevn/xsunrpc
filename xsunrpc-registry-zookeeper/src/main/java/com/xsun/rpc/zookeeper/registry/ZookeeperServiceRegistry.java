@@ -21,7 +21,7 @@ public class ZookeeperServiceRegistry implements ServiceRegistry {
 
     @Override
     public void registry(String serviceName, String serviceAddress) {
-
+        LOG.info("registry service: {} => {}", serviceName, serviceAddress);
         String registryPath = Constant.ZK_REGISTRY_PATH ;
 
         if(!zkClient.exists(registryPath)){

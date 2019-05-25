@@ -17,7 +17,7 @@
         </bean>
 
         <bean id="xsunRpcServer" class="com.xsun.rpc.server.RpcServer">
-            <constructor-arg name="serviceAddress" value="${rpc.registry_address}"/>
+            <constructor-arg name="serviceAddress" value="${rpc.server_address}"/>
             <constructor-arg name="serviceRegistry" ref="serviceRegistry"/>
         </bean>
     </beans>

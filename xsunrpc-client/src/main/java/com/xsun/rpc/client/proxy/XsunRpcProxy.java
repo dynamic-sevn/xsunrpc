@@ -62,7 +62,7 @@ public class XsunRpcProxy {
                     String[] addressArray = serviceAddress.split(":");
 
                     Integer port = Integer.parseInt(addressArray[1]) ;
-                    RpcClient rpcClient = new RpcClient(serviceAddress, port) ;
+                    RpcClient rpcClient = new RpcClient(addressArray[0], port) ;
                     RpcResponse response = rpcClient.remoteInvoke(rpcRequest) ;
                     if(response == null){
                         throw new RuntimeException("response is null") ;
