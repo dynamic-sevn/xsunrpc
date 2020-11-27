@@ -58,7 +58,9 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse> {
             bootstrap.option(ChannelOption.TCP_NODELAY, true);
             ChannelFuture channelFuture = bootstrap.connect(address, port).sync();
             Channel channel = channelFuture.channel();
+            // sync Waits for this future until it is done
             channel.writeAndFlush(rpcRequest).sync();
+            // Wait until the server socket is closed，In this example, this does not happen, but you can do that to gracefully shut down your server
             channel.closeFuture().sync();
 
             return rpcResponse;
